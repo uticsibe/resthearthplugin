@@ -1,0 +1,144 @@
+---
+swagger: "2.0"
+info:
+  description: "Order Management DPS Get API"
+  version: "3.10.0"
+  title: "Product Ordering API"
+  contact:
+    name: "DXC Team"
+    email: "DXC_MT_OM_DPS@dxc.com"
+  license:
+    name: "Proprietary license"
+basePath: "/orderManagement/v1"
+tags:
+- name: "Order"
+  description: "the Orders Get API"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /Orders/{orderId}:
+    get:
+      tags:
+      - "Order"
+      summary: "Get Order"
+      operationId: "getOrdersByOrderId"
+      consumes: []
+      parameters:
+      - name: "orderId"
+        in: "path"
+        description: "id of order"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Order by order id."
+          schema:
+            $ref: "#/definitions/OrderObject"
+        206:
+          description: "Partial content"
+          schema:
+            $ref: "#/definitions/Error"
+        207:
+          description: "Warning or info"
+          schema:
+            $ref: "#/definitions/Error"
+        400:
+          description: "Bad format request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Not authenticated"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Not authorized"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/Error"
+        408:
+          description: "Request timeout"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Business rules exceptions"
+          schema:
+            $ref: "#/definitions/Error"
+        422:
+          description: "Business input parameter validation error"
+          schema:
+            $ref: "#/definitions/Error"
+        429:
+          description: "Too many requests"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Server error"
+          schema:
+            $ref: "#/definitions/Error"
+        504:
+          description: "Backend not available"
+          schema:
+            $ref: "#/definitions/Error"
+      deprecated: false
+definitions:
+  OrderObject:
+    type: "object"
+    title: "OrderObject"
+  Error:
+    type: "object"
+    required:
+    - "code"
+    - "id"
+    - "timestamp"
+    properties:
+      id:
+        type: "string"
+        description: "Unique error ID, used for logging purposes, UUID format"
+      code:
+        type: "string"
+        description: "A string coding the error type. This is given to caller so he\
+          \ can translate them if required."
+      timestamp:
+        type: "string"
+        format: "date-time"
+        description: "Exact time of error"
+      message:
+        type: "string"
+        description: "A short localized string that describes the error."
+      retryable:
+        type: "boolean"
+        description: "A boolean that provides info is request retryable"
+      severity:
+        type: "string"
+        description: "Describes severity of error. Order from most to least critical\
+          \ is: FATAL, ERROR, WARN, INFO, DEBUG, TRACE\n* `FATAL` Designates very\
+          \ severe error events that will presumably lead the application to abort.\
+          \  \n* `ERROR` Designates error events that might still allow the application\
+          \ to continue running.  \n* `WARN` Designates potentially harmful situations.\
+          \  \n* `INFO` Designates informational messages that highlight the progress\
+          \ of the application at coarse-grained level.  \n* `DEBUG` Designates fine-grained\
+          \ informational events that are most useful to debug an application.  \n\
+          * `TRACE` Designates finer-grained informational events than the DEBUG. "
+        enum:
+        - "FATAL"
+        - "ERROR"
+        - "WARN"
+        - "INFO"
+        - "DEBUG"
+        - "TRACE"
+      details:
+        type: "array"
+        description: "Exception detailed info"
+        items:
+          type: "object"
+          properties: {}
+    title: "Error"
+    description: "Default error message template"
+

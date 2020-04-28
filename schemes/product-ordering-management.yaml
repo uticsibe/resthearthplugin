@@ -1,0 +1,2347 @@
+---
+swagger: "2.0"
+info:
+  description: "HAL Product Ordering API HAL Product Ordering API"
+  version: "3.10.0"
+  title: "Product Ordering API"
+  contact:
+    name: "HAL Team"
+    email: "HAL.Team@t.ht.hr"
+  license:
+    name: "Proprietary license"
+host: "localhost:8013"
+basePath: "/productOrdering/v3"
+tags:
+- name: "Product Order"
+  description: "the productOrders API"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+security:
+- accessToken: []
+- apiKey: []
+paths:
+  /productOrders:
+    get:
+      tags:
+      - "Product Order"
+      summary: "Find ProductOrder"
+      operationId: "getProductOrders"
+      consumes: []
+      parameters:
+      - name: "approver"
+        in: "query"
+        description: "find by approver"
+        required: false
+        type: "string"
+      - name: "categories.id"
+        in: "query"
+        description: "data sort parameter, starts with '+' or '-' prefix; when prefix\
+          \ empty, '+' is default; multiple attributes can be used separated by ','"
+        required: false
+        type: "string"
+      - name: "channel"
+        in: "query"
+        description: "find by channel"
+        required: false
+        type: "string"
+      - name: "fields"
+        in: "query"
+        description: "list of fields returned in response"
+        required: false
+        type: "string"
+      - name: "owner"
+        in: "query"
+        description: "find by owner"
+        required: false
+        type: "string"
+      - name: "page"
+        in: "query"
+        description: "page, positive integer, starts with 0"
+        required: false
+        type: "string"
+      - name: "product.id"
+        in: "query"
+        description: "data sort parameter, starts with '+' or '-' prefix; when prefix\
+          \ empty, '+' is default; multiple attributes can be used separated by ','"
+        required: false
+        type: "string"
+      - name: "query"
+        in: "query"
+        description: "RQL command"
+        required: false
+        type: "string"
+      - name: "size"
+        in: "query"
+        description: "page size, positive integer greater than 0"
+        required: false
+        type: "string"
+      - name: "sort"
+        in: "query"
+        description: "data sort parameter, starts with '+' or '-' prefix; when prefix\
+          \ empty, '+' is default; multiple attributes can be used separated by ','"
+        required: false
+        type: "string"
+      - name: "state"
+        in: "query"
+        description: "find by state"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "List of product orders."
+          headers:
+            X-Content-Range:
+              type: "string"
+              description: "returns paging info in format {page}/{limit}/{results}|*"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ProductOrder"
+        206:
+          description: "Partial content"
+          schema:
+            $ref: "#/definitions/Error"
+        207:
+          description: "Warning or info"
+          schema:
+            $ref: "#/definitions/Error"
+        400:
+          description: "Bad format request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Not authenticated"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Not authorized"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/Error"
+        408:
+          description: "Request timeout"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Business rules exceptions"
+          schema:
+            $ref: "#/definitions/Error"
+        422:
+          description: "Business input parameter validation error"
+          schema:
+            $ref: "#/definitions/Error"
+        429:
+          description: "Too many requests"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Server error"
+          schema:
+            $ref: "#/definitions/Error"
+        504:
+          description: "Backend not available"
+          schema:
+            $ref: "#/definitions/Error"
+      deprecated: false
+    post:
+      tags:
+      - "Product Order"
+      summary: "Create ProductOrder"
+      operationId: "postProductOrders"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "New Product Order"
+        required: true
+        schema:
+          $ref: "#/definitions/ProductOrder"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ProductOrder"
+        201:
+          description: "Created Product Order"
+          schema:
+            $ref: "#/definitions/ProductOrder"
+        206:
+          description: "Partial content"
+          schema:
+            $ref: "#/definitions/Error"
+        207:
+          description: "Warning or info"
+          schema:
+            $ref: "#/definitions/Error"
+        400:
+          description: "Bad format request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Not authenticated"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Not authorized"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/Error"
+        408:
+          description: "Request timeout"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Business rules exceptions"
+          schema:
+            $ref: "#/definitions/Error"
+        422:
+          description: "Business input parameter validation error"
+          schema:
+            $ref: "#/definitions/Error"
+        429:
+          description: "Too many requests"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Server error"
+          schema:
+            $ref: "#/definitions/Error"
+        504:
+          description: "Backend not available"
+          schema:
+            $ref: "#/definitions/Error"
+      deprecated: false
+  /productOrders/{productOrderId}:
+    get:
+      tags:
+      - "Product Order"
+      summary: "Get ProductOrder"
+      operationId: "getProductOrdersProductOrderId"
+      consumes: []
+      parameters:
+      - name: "fields"
+        in: "query"
+        description: "list of fields returned in response"
+        required: false
+        type: "string"
+      - name: "productOrderId"
+        in: "path"
+        description: "id of product order"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "List of product orders by order id."
+          schema:
+            $ref: "#/definitions/ProductOrder"
+        206:
+          description: "Partial content"
+          schema:
+            $ref: "#/definitions/Error"
+        207:
+          description: "Warning or info"
+          schema:
+            $ref: "#/definitions/Error"
+        400:
+          description: "Bad format request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Not authenticated"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Not authorized"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/Error"
+        408:
+          description: "Request timeout"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Business rules exceptions"
+          schema:
+            $ref: "#/definitions/Error"
+        422:
+          description: "Business input parameter validation error"
+          schema:
+            $ref: "#/definitions/Error"
+        429:
+          description: "Too many requests"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Server error"
+          schema:
+            $ref: "#/definitions/Error"
+        504:
+          description: "Backend not available"
+          schema:
+            $ref: "#/definitions/Error"
+      deprecated: false
+    patch:
+      tags:
+      - "Product Order"
+      summary: "Patch ProductOrder"
+      operationId: "patchProductOrdersProductOrderId"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Product Order"
+        required: true
+        schema:
+          $ref: "#/definitions/ProductOrder"
+      - name: "fields"
+        in: "query"
+        description: "list of fields that needs to be changed in PATCH method"
+        required: true
+        type: "string"
+      - name: "productOrderId"
+        in: "path"
+        description: "Product Order Id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Updated Product Order"
+          schema:
+            $ref: "#/definitions/ProductOrder"
+        206:
+          description: "Partial content"
+          schema:
+            $ref: "#/definitions/Error"
+        207:
+          description: "Warning or info"
+          schema:
+            $ref: "#/definitions/Error"
+        400:
+          description: "Bad format request"
+          schema:
+            $ref: "#/definitions/Error"
+        401:
+          description: "Not authenticated"
+          schema:
+            $ref: "#/definitions/Error"
+        403:
+          description: "Not authorized"
+          schema:
+            $ref: "#/definitions/Error"
+        404:
+          description: "Not found"
+          schema:
+            $ref: "#/definitions/Error"
+        408:
+          description: "Request timeout"
+          schema:
+            $ref: "#/definitions/Error"
+        409:
+          description: "Business rules exceptions"
+          schema:
+            $ref: "#/definitions/Error"
+        422:
+          description: "Business input parameter validation error"
+          schema:
+            $ref: "#/definitions/Error"
+        429:
+          description: "Too many requests"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "Server error"
+          schema:
+            $ref: "#/definitions/Error"
+        504:
+          description: "Backend not available"
+          schema:
+            $ref: "#/definitions/Error"
+      deprecated: false
+securityDefinitions:
+  accessToken:
+    description: "Access token in JWT or opaque format sent in HTTP Authorization\
+      \ header, Bearer schema"
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+  apiKey:
+    description: "API key for technical accounts (opaque format) sent in HTTP Authorization\
+      \ header, no schema"
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+definitions:
+  AdditionalOneTimeUseReference:
+    type: "object"
+    properties:
+      type:
+        type: "string"
+        description: "One time user reference type (ex. CvvOnlyNonce)"
+      value:
+        type: "string"
+        description: "One time user reference value"
+    title: "AdditionalOneTimeUseReference"
+  Address:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the address"
+      href:
+        type: "string"
+        description: "An URI used to access to the address resource"
+      addressRole:
+        description: "Address role"
+        $ref: "#/definitions/AddressRoleReference"
+      validFor:
+        description: "Address role validity"
+        $ref: "#/definitions/TimePeriod"
+      streetNr:
+        type: "string"
+        description: "Number identifying a specific property on a public street. It\
+          \ may be combined with streetNrLast for ranged addresses"
+      streetNrSuffix:
+        type: "string"
+        description: "The first street number suffix"
+      streetNrLast:
+        type: "string"
+        description: "Last number in a range of street numbers allocated to a property"
+      streetNrLastSuffix:
+        type: "string"
+        description: "Last street number suffix for a ranged address"
+      streetName:
+        type: "string"
+        description: "Name of the street or other street type"
+      streetType:
+        type: "string"
+        description: "Alley, avenue, boulevard, brae, crescent, drive, highway, lane,\
+          \ terrace, parade, place, tarn, way, wharf"
+      streetSuffix:
+        type: "string"
+        description: "A modifier denoting a relative direction"
+      postcode:
+        type: "string"
+        description: "Descriptor for a postal delivery area, used to speed and simplify\
+          \ the delivery of mail (also known as zipcode)"
+      locality:
+        type: "string"
+        description: "Locality (suburb, principality, ...)"
+      city:
+        type: "string"
+        description: "City that the address is in"
+      stateOrProvince:
+        type: "string"
+        description: "The State or Province that the address is in"
+      country:
+        type: "string"
+        description: "Country that the address is in"
+      geoCode:
+        description: "Geographic code of the address"
+        $ref: "#/definitions/GeoCode"
+      characteristics:
+        type: "array"
+        description: "Telecom specific characteristics"
+        items:
+          $ref: "#/definitions/Characteristic"
+      location:
+        description: "Geographical location of the address"
+        $ref: "#/definitions/Location"
+      subAddresses:
+        type: "array"
+        description: "Addressing within a property (building, floor, ...)"
+        items:
+          $ref: "#/definitions/SubAddress"
+      note:
+        type: "string"
+        description: "Note"
+      audit:
+        description: "Used to provide an Audit object"
+        $ref: "#/definitions/Audit"
+      addressSpecRef:
+        description: "Address specification reference"
+        $ref: "#/definitions/VersionReference"
+    title: "Address"
+    description: "Structured textual way of describing how to find a Property in an\
+      \ urban area (country properties are often defined differently)."
+  AddressRoleReference:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Address role reference identifier"
+      href:
+        type: "string"
+        description: "Address role reference"
+      role:
+        type: "string"
+        description: "Address role (legal, billDelivery, notificationDelivery, goodsDelivery,\
+          \ ...)"
+        enum:
+        - "goodsDelivery"
+        - "contact"
+        - "billDelivery"
+        - "installation"
+        - "legal"
+        - "main"
+      validFor:
+        description: "Address role reference validity"
+        $ref: "#/definitions/TimePeriod"
+    title: "AddressRoleReference"
+    description: "Used to provide information on Address role reference object"
+  Audit:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Audit ID."
+      createdBy:
+        type: "string"
+        description: "User that created the record."
+      createdDate:
+        type: "string"
+        format: "date-time"
+        description: "Date when the record was created."
+      changedBy:
+        type: "string"
+        description: "User who modified the record"
+      changedDate:
+        type: "string"
+        format: "date-time"
+        description: "Date when the record was modified."
+      entityVersion:
+        type: "string"
+        description: "Version of record. Starts with 0 on insert and is increased\
+          \ by one on each update. -1 for deleted records."
+      tagId:
+        type: "string"
+        description: "Tag Id."
+      spanId:
+        type: "string"
+        description: "Span Id."
+      changeReason:
+        type: "string"
+        description: "Reason why change has made."
+      sourceSystem:
+        type: "string"
+        description: "Source system that initiated change."
+      sourceSystemUser:
+        type: "string"
+        description: "Source system User that initiated change."
+    title: "Audit"
+    description: "Used to provide auditing data."
+  CartTerm:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Id of entity."
+      href:
+        type: "string"
+        description: "A valid link to the entity"
+      name:
+        type: "string"
+        description: "Name for the entity"
+      description:
+        type: "string"
+        description: "Description for the entity"
+      dateCreated:
+        type: "string"
+        format: "date-time"
+        description: "Creation date for the entity"
+      status:
+        type: "string"
+        description: "Indicates status of the entity  \n* `agreed` Party privacy profile\
+          \ or term is agreed  \n* `created`   Party privacy profile or term is created\
+          \  \n* `terminated` Party privacy profile or term is terminated  "
+        enum:
+        - "agreed"
+        - "created"
+        - "terminated"
+      validFor:
+        description: "The period for which the entity is valid"
+        $ref: "#/definitions/TimePeriod"
+      agreedByParty:
+        description: "PartyId from the owner of the entity"
+        $ref: "#/definitions/RelatedPartyRef"
+      shoppingCartTermTypeRef:
+        description: "Associated ShoppingCartTermType"
+        $ref: "#/definitions/VersionReference"
+      shoppingCartTermCharacteristics:
+        type: "array"
+        description: "Associated characteristics of the ShoppingCartTermType"
+        items:
+          $ref: "#/definitions/CartTermCharacteristic"
+      audit:
+        description: "Information containing meta data related to resource event"
+        $ref: "#/definitions/Audit"
+    title: "CartTerm"
+    description: "Used to provide info on ShoppingCart Term"
+  CartTermCharacteristic:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Id of the partyPrivacyProfile or cartTerm characteristic"
+      href:
+        type: "string"
+        description: "A valid link to the partyPrivacyProfile or cartTerm characteristic"
+      name:
+        type: "string"
+        description: "Name of the partyPrivacyProfile or cartTerm characteristic"
+      version:
+        type: "string"
+        description: "characteristic version"
+      enabled:
+        type: "boolean"
+        description: "Defines if characteristic is changeable"
+      validFor:
+        description: "Indicated time validity"
+        $ref: "#/definitions/TimePeriod"
+      values:
+        type: "array"
+        description: "List of characteristic values"
+        items:
+          type: "string"
+    title: "CartTermCharacteristic"
+    description: "Used to provide info on Party Privacy Profile Characteristics"
+  Characteristic:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "characteristic name"
+      value:
+        type: "string"
+        description: "characteristic value"
+    title: "Characteristic"
+  Contact:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the Contact"
+      href:
+        type: "string"
+        description: "Link to the Contact"
+      name:
+        type: "string"
+        description: "Name of the Contact"
+      relatedParty:
+        description: "Party to which contact belongs to"
+        $ref: "#/definitions/RelatedPartyRef"
+      group:
+        type: "string"
+        description: "Contact group\n * `personal` This Contact is personal\n * `business`\
+          \ This Contact is business"
+        enum:
+        - "personal"
+        - "business"
+      type:
+        type: "string"
+        description: "Contact type\n * `address` This Contact type is street address\n\
+          \ * `email` This Contact type is email\n * `phone` This Contact type is\
+          \ phone number\n * `mobile` This Contact type is mobile phone number\n *\
+          \ `fax` This Contact type is fax phone number\n * `social` This Contact\
+          \ type is social network Id"
+        enum:
+        - "address"
+        - "email"
+        - "phone"
+        - "mobile"
+        - "fax"
+        - "social"
+      role:
+        description: "Info regarding contact role"
+        $ref: "#/definitions/ContactRoleReference"
+      validFor:
+        description: "validity period"
+        $ref: "#/definitions/TimePeriod"
+      medium:
+        description: "contact medium"
+        $ref: "#/definitions/Medium"
+      preferred:
+        type: "boolean"
+        description: "If true, indicates that is the preferred contact."
+      validated:
+        type: "boolean"
+        description: "If true, indicates that is the validated contact."
+      characteristics:
+        type: "array"
+        description: "Contact characteristics"
+        items:
+          $ref: "#/definitions/Characteristic"
+      audit:
+        description: "Auditing data."
+        $ref: "#/definitions/Audit"
+    title: "Contact"
+    description: "Used to provide info regarding contact"
+  ContactRoleReference:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Contact Role ID"
+      href:
+        type: "string"
+        description: "resource URI"
+      name:
+        type: "string"
+        description: "Contact role, i.e.\n * `contactPersonForCompany` contact person\
+          \ for Company\n * `salesRepresentative` salesRepresentative \n * `deliverFrom`\
+          \ contact from which goods are being delivered\n * `deliverTo` contact to\
+          \ which goods are being delivered etc"
+      validFor:
+        description: "validity period"
+        $ref: "#/definitions/TimePeriod"
+    title: "ContactRoleReference"
+    description: "Used to provide info regarding contact role on Party"
+  CreditScoringResult:
+    type: "object"
+    properties:
+      isQualified:
+        type: "boolean"
+        description: "Flag if Credit Scoring Calculation needs to be done."
+      qualificationResult:
+        type: "string"
+        description: "Credit Scoring Calculation result"
+        enum:
+        - "qualified"
+        - "unqualified"
+        - "alternate"
+        - "modified"
+        - "conditionMissing"
+      qualificationId:
+        type: "string"
+        description: "Credit Scoring Calculation qualification unique identifier"
+      calculationId:
+        type: "string"
+        description: "Credit Scoring Calculation calculation unique identifier"
+    title: "CreditScoringResult"
+    description: "Credit scoring information"
+  Error:
+    type: "object"
+    required:
+    - "code"
+    - "id"
+    - "timestamp"
+    properties:
+      id:
+        type: "string"
+        description: "Unique error ID, used for logging purposes, UUID format"
+      code:
+        type: "string"
+        description: "A string coding the error type. This is given to caller so he\
+          \ can translate them if required."
+      timestamp:
+        type: "string"
+        format: "date-time"
+        description: "Exact time of error"
+      message:
+        type: "string"
+        description: "A short localized string that describes the error."
+      retryable:
+        type: "boolean"
+        description: "A boolean that provides info is request retryable"
+      severity:
+        type: "string"
+        description: "Describes severity of error. Order from most to least critical\
+          \ is: FATAL, ERROR, WARN, INFO, DEBUG, TRACE\n* `FATAL` Designates very\
+          \ severe error events that will presumably lead the application to abort.\
+          \  \n* `ERROR` Designates error events that might still allow the application\
+          \ to continue running.  \n* `WARN` Designates potentially harmful situations.\
+          \  \n* `INFO` Designates informational messages that highlight the progress\
+          \ of the application at coarse-grained level.  \n* `DEBUG` Designates fine-grained\
+          \ informational events that are most useful to debug an application.  \n\
+          * `TRACE` Designates finer-grained informational events than the DEBUG. "
+        enum:
+        - "FATAL"
+        - "ERROR"
+        - "WARN"
+        - "INFO"
+        - "DEBUG"
+        - "TRACE"
+      details:
+        type: "array"
+        description: "Exception detailed info"
+        items:
+          type: "object"
+          properties: {}
+    title: "Error"
+    description: "Default error message template"
+  GeoCode:
+    type: "object"
+    properties:
+      latitude:
+        type: "string"
+        description: "Geographic latitude"
+      longitude:
+        type: "string"
+        description: "Geographic longitude"
+      geographicDatum:
+        type: "string"
+        description: "Geodetic datum"
+    title: "GeoCode"
+    description: "Used to provide information on geographic code. Deprecated and shouldn't\
+      \ be used. Use \"location\" instead."
+  Location:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique Identifier of a GeoLocation"
+      href:
+        type: "string"
+        description: "Href of the GeoLocation"
+      name:
+        type: "string"
+        description: "Name of a GeoLocation"
+      geometryType:
+        type: "string"
+        description: "Type allows describing Geolocation form: it could be a point,\
+          \ a line, a polygon, a cylinder, etc..."
+      accuracy:
+        type: "string"
+        description: "Accuracy"
+      spatialRef:
+        type: "string"
+        description: "Spatial reference"
+      geometry:
+        type: "array"
+        description: "Geographical points related to location"
+        items:
+          $ref: "#/definitions/Point"
+    title: "Location"
+    description: "A GeographicLocation allows describing through coordinate(s) a point,\
+      \ a line or a space."
+  Medium:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "used to override value in the Contact.name"
+      address:
+        description: "Address of the Individual Identification."
+        $ref: "#/definitions/Address"
+      emailAddress:
+        type: "string"
+        description: "Contact email address"
+      number:
+        type: "string"
+        description: "Contact address phone/fax/mobile number"
+      socialType:
+        type: "string"
+        description: "Social Network type"
+      socialId:
+        type: "string"
+        description: "Social Network identification"
+      audit:
+        description: "Used to provide an Audit object"
+        $ref: "#/definitions/Audit"
+    title: "Medium"
+    description: "Describes the contact medium that could be used to contact the customer."
+  Note:
+    type: "object"
+    properties:
+      date:
+        type: "string"
+        format: "date-time"
+        description: "Note creation date"
+      author:
+        description: "Author of the note"
+        $ref: "#/definitions/RelatedPartyRef"
+      text:
+        type: "string"
+        description: "Text of the note"
+    title: "Note"
+    description: "Note"
+  OrderItem:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Identifier (generally it is a sequence number 01, 02, 03, ...)\
+          \ of the item"
+      name:
+        type: "string"
+        description: "Name of the item"
+      description:
+        type: "string"
+        description: "description"
+      state:
+        type: "string"
+        description: "State of the order item"
+        enum:
+        - "acknowledged"
+        - "accepted"
+        - "rejected"
+        - "inProgress"
+        - "pending"
+        - "held"
+        - "cancelled"
+        - "completed"
+        - "failed"
+        - "partial"
+      action:
+        type: "string"
+        description: "Action can be  \n* `add` add \n* `modify` modify \n* `noChange`\
+          \ noChange  \n* `delete` delete  "
+        enum:
+        - "add"
+        - "modify"
+        - "noChange"
+        - "delete"
+      expectedCompletionDate:
+        type: "string"
+        format: "date-time"
+        description: "Expected Item completion date"
+      quantity:
+        type: "integer"
+        format: "int32"
+        description: "Quantity of items"
+      notes:
+        type: "array"
+        description: "Item notes"
+        items:
+          $ref: "#/definitions/Note"
+      product:
+        description: "Configure the product characteristics and/or identify the product\
+          \ that needs to be modified"
+        $ref: "#/definitions/ProductConfigRef"
+      productOffering:
+        description: "Represents entities that can be ordered from the provider of\
+          \ the catalog, includes pricing information"
+        $ref: "#/definitions/ProductOfferingConfigRef"
+      totalPrice:
+        description: "An amount, usually of money, that represents the actual price\
+          \ for this item, baseline price"
+        $ref: "#/definitions/ProductOfferingPrice"
+      upfrontPrice:
+        description: "An amount, usually of money, that represents the actual price\
+          \ paid by the customer for this item, upfront price."
+        $ref: "#/definitions/ProductOfferingPrice"
+      recurringPrices:
+        type: "array"
+        description: "An amount, usually of money, that represents the actual price\
+          \ for this item, recurring price"
+        items:
+          $ref: "#/definitions/ProductOfferingPrice"
+      isCustomerVisible:
+        type: "boolean"
+        description: "Flag is item visible to the Customer"
+      relatedEntities:
+        type: "array"
+        description: "List of related entities"
+        items:
+          $ref: "#/definitions/RelatedEntity"
+      billingAccounts:
+        type: "array"
+        description: "Order item billing accounts"
+        items:
+          $ref: "#/definitions/Reference"
+      creditScoringResult:
+        description: "Credit scoring result"
+        $ref: "#/definitions/CreditScoringResult"
+      reservationRef:
+        description: "Reference to reservation"
+        $ref: "#/definitions/ValidityReference"
+      appointment:
+        description: "Appointment reference with a related party for this order item"
+        $ref: "#/definitions/Reference"
+      orderItemRelationships:
+        type: "array"
+        description: "Relationship among cart items"
+        items:
+          $ref: "#/definitions/OrderItemRelationship"
+      stateChanges:
+        type: "array"
+        description: "list of state changes"
+        items:
+          $ref: "#/definitions/StateChange"
+    title: "OrderItem"
+    description: "OrderItem"
+  OrderItemRelationship:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the related Entity"
+      href:
+        type: "string"
+        description: "URI of the related Entity"
+      name:
+        type: "string"
+        description: "Name of the related Entity"
+      type:
+        type: "string"
+        description: "Used to indicate relation types \n* `bundles` Strong parent-child\
+          \ level relationship (parent perspective) between main and related entity.\
+          \ Removing parent removes child. Child is not removable.\n* `isBundleOf`\
+          \ Strong parent-child level relationship (child perspective) between main\
+          \ and related entity. Removing parent removes child. Child is not removable.\n\
+          * `isChildOf` Strong parent-child level relationship (child perspective)\
+          \ between main and related entity. Removing parent removes child. Child\
+          \ is removable.\n* `isParentOf` Strong parent-child level relationship (parent\
+          \ perspective) between main and related entity. Removing parent removes\
+          \ child. Child is removable.\n* `dependsOn` Weak parent-child level relationship\
+          \ (child perspective) between main and related entity. Removing parent does\
+          \ not remove child, but it can affect child data (prices, characteristics,\
+          \ etc). Child is removable.\n* `contains` Weak parent-child level relationship\
+          \ (parent perspective) between main and related entity. Child entity is\
+          \ not bundled.\n* `includes` Weak parent-child level relationship (parent\
+          \ perspective) between main and related entity. Child entity is not bundled,\
+          \ but it is selected for activation."
+        enum:
+        - "bundles"
+        - "isBundleOf"
+        - "isChildOf"
+        - "isParentOf"
+        - "dependsOn"
+        - "contains"
+        - "includes"
+      validFor:
+        description: "Validity period of the relation"
+        $ref: "#/definitions/TimePeriod"
+    title: "OrderItemRelationship"
+    description: "Relationship among cart items"
+  OrderValidationStatus:
+    type: "object"
+    properties:
+      result:
+        type: "string"
+        description: "Result values:\n* `qualified` qualified \n* `unqualified` unqualified\
+          \ \n* `modified` modified \n* `alternate` alternate \n* `conditionMissing`\
+          \ conditionMissing "
+        enum:
+        - "qualified"
+        - "unqualified"
+        - "alternate"
+        - "modified"
+        - "conditionMissing"
+      code:
+        type: "string"
+        description: "code"
+      description:
+        type: "string"
+        description: "description"
+    title: "OrderValidationStatus"
+    description: "ValidationStatus resource is used as container for each cart items\
+      \ validation results"
+  PartyPrivacyProfile:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Id of entity."
+      href:
+        type: "string"
+        description: "A valid link to the entity"
+      name:
+        type: "string"
+        description: "Name for the entity"
+      description:
+        type: "string"
+        description: "Description for the entity"
+      dateCreated:
+        type: "string"
+        format: "date-time"
+        description: "Creation date for the entity"
+      status:
+        type: "string"
+        description: "Indicates status of the entity  \n* `agreed` Party privacy profile\
+          \ or term is agreed  \n* `created`   Party privacy profile or term is created\
+          \  \n* `terminated` Party privacy profile or term is terminated  "
+        enum:
+        - "agreed"
+        - "created"
+        - "terminated"
+      validFor:
+        description: "The period for which the entity is valid"
+        $ref: "#/definitions/TimePeriod"
+      agreedByParty:
+        description: "PartyId from the owner of the entity"
+        $ref: "#/definitions/RelatedPartyRef"
+      partyPrivacyProfileTypeRef:
+        description: "Associated party privacy profile type"
+        $ref: "#/definitions/VersionReference"
+      partyPrivacyProfileCharacteristics:
+        type: "array"
+        description: "Associated characteristics of the party privacy profile type"
+        items:
+          $ref: "#/definitions/PartyPrivacyProfileCharacteristic"
+      audit:
+        description: "Information containing meta data related to resource event"
+        $ref: "#/definitions/Audit"
+    title: "PartyPrivacyProfile"
+    description: "Used to provide info on Party Privacy Profile"
+  PartyPrivacyProfileCharacteristic:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Id of the partyPrivacyProfile or cartTerm characteristic"
+      href:
+        type: "string"
+        description: "A valid link to the partyPrivacyProfile or cartTerm characteristic"
+      name:
+        type: "string"
+        description: "Name of the partyPrivacyProfile or cartTerm characteristic"
+      version:
+        type: "string"
+        description: "characteristic version"
+      enabled:
+        type: "boolean"
+        description: "Defines if characteristic is changeable"
+      validFor:
+        description: "Indicated time validity"
+        $ref: "#/definitions/TimePeriod"
+      values:
+        type: "array"
+        description: "List of characteristic values"
+        items:
+          type: "string"
+    title: "PartyPrivacyProfileCharacteristic"
+    description: "Used to provide info on Party Privacy Profile Characteristics"
+  PaymentMethodReference:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier"
+      type:
+        type: "string"
+        description: "PaymentMethod Type"
+        enum:
+        - "mobileAccount"
+        - "fixedAccount"
+        - "bankAccountTransfer"
+        - "bankAccountDebit"
+        - "bankCard"
+        - "cash"
+        - "pos"
+        - "digitalWallet"
+        - "payByLink"
+        - "tokenizedCard"
+        - "voucher"
+        - "postpaid"
+        - "juvoLoan"
+        - "loyalty"
+      nonce:
+        type: "string"
+        description: "Payment method identifier"
+      storePaymentMethod:
+        type: "boolean"
+        description: "Store payment method flag"
+      payOnDelivery:
+        type: "boolean"
+        description: "Pay on delivery flag"
+      additionalNonces:
+        type: "array"
+        description: "Additional One-time-use references to payment information"
+        items:
+          $ref: "#/definitions/AdditionalOneTimeUseReference"
+    title: "PaymentMethodReference"
+    description: "Reference to Payment Method"
+  PaymentRef:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier"
+      href:
+        type: "string"
+        description: "Hypertext Reference"
+      name:
+        type: "string"
+        description: "Name of the Reference"
+      numOfInstallments:
+        type: "string"
+        description: "Number of installments"
+    title: "PaymentRef"
+    description: "Reference to payment resource"
+  Point:
+    type: "object"
+    properties:
+      x:
+        type: "string"
+        description: "x coordinate (usually latitude)"
+      y:
+        type: "string"
+        description: "y coordinate (usually longitude)"
+      z:
+        type: "string"
+        description: "z coordinate (usually elevation)"
+    title: "Point"
+    description: "A GeographicPoint defines a geographic point through coordinates."
+  Price:
+    type: "object"
+    properties:
+      currencyCode:
+        type: "string"
+        description: "A string used as a code for specifying the currency associated\
+          \ to the given amounts. The ISO4217 norm uses 3 letters to define the currency\
+          \ (for example USD for US dollar or EUR for Euro). Applicable for monetary\
+          \ prices."
+      taxIncludedAmount:
+        type: "number"
+        description: "All taxes included amount (expressed in the given currency,\
+          \ where currency is applicable)"
+      dutyFreeAmount:
+        type: "number"
+        description: "All taxes excluded amount (expressed in the given currency,\
+          \ where currency is applicable)"
+      taxRate:
+        type: "number"
+        description: "Tax rate"
+      percentage:
+        type: "number"
+        description: "Percentage to apply for ProdOfferPriceAlteration"
+    title: "Price"
+    description: "Provides all amounts (tax included, duty free, tax rate), used currency\
+      \ and percentage to apply for order item price and price alteration"
+  PriceCondition:
+    type: "object"
+    properties:
+      type:
+        type: "string"
+        description: "Relation type  \n* `specificationCharValue` specificationCharValue\
+          \  \n* `productOffering` productOffering  \n* `compositeProductOfferingPrice`\
+          \ compositeProductOfferingPrice  \n* `productOfferingTerm` productOfferingTerm "
+        enum:
+        - "specificationCharValue"
+        - "productOffering"
+        - "compositeProductOfferingPrice"
+        - "productOfferingTerm"
+      id:
+        type: "string"
+        description: "Unique identifier of the Price Condition"
+      href:
+        type: "string"
+        description: "URI of the Price Condition"
+      name:
+        type: "string"
+        description: "Name of the Price Condition"
+      description:
+        type: "string"
+        description: "Description of the Price Condition"
+      value:
+        type: "string"
+        description: "Value of the Price Condition"
+    title: "PriceCondition"
+    description: "Defines all conditions that can affect price."
+  ProductConfigRef:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier"
+      href:
+        type: "string"
+        description: "Hypertext Reference"
+      name:
+        type: "string"
+        description: "Name of the product"
+      description:
+        type: "string"
+        description: "description"
+      group:
+        type: "string"
+        description: "Used to categorize product offerings by hierarchy (horizontal\
+          \ grouping)  \n* `service` service  \n* `addon` addon  \n* `discount` discount\
+          \  \n* `device` device  \n* `SIM` SIM  \n* `VAS` external partner offering\
+          \  \n* `bundle` bundle  \n* `number` number"
+        enum:
+        - "service"
+        - "addon"
+        - "discount"
+        - "device"
+        - "VAS"
+        - "SIM"
+        - "bundle"
+        - "number"
+        - "tariff"
+      characteristics:
+        type: "array"
+        description: "A list of changed product characteristics."
+        items:
+          $ref: "#/definitions/Characteristic"
+      relatedParties:
+        type: "array"
+        description: "A list of related party references. A related party defines\
+          \ party or party role linked to a specific entity."
+        items:
+          $ref: "#/definitions/RelatedPartyRef"
+      productOfferingRef:
+        description: "Current product offering reference."
+        $ref: "#/definitions/VersionReference"
+    title: "ProductConfigRef"
+    description: "Product reference. Configure the product characteristics (only configurable\
+      \ characteristics and necessary only if a non default value is selected) and/or\
+      \ identify the product that needs to be modified/deleted."
+  ProductOfferingConfigRef:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier"
+      name:
+        type: "string"
+        description: "Name"
+      version:
+        type: "string"
+        description: "Version"
+      description:
+        type: "string"
+        description: "description"
+      group:
+        type: "string"
+        description: "Used to categorize product offerings by hierarchy (horizontal\
+          \ grouping)  \n* `service` service  \n* `addon` addon  \n* `discount` discount\
+          \  \n* `device` device  \n* `SIM` SIM  \n* `VAS` external partner offering\
+          \  \n* `bundle` bundle  \n* `bundledProduct` bundled product  \n* `tariff`\
+          \ tariff  \n* `number` number  \n* `topup` topup \n* `deliveryMethod` delivery\
+          \ method \n* `billDelivery` bill delivery "
+        enum:
+        - "service"
+        - "addon"
+        - "discount"
+        - "device"
+        - "VAS"
+        - "SIM"
+        - "bundle"
+        - "bundledProduct"
+        - "tariff"
+        - "topUp"
+        - "number"
+        - "campaign"
+        - "deliveryMethod"
+        - "billDeliveryMethod"
+      productSpecificationRef:
+        description: "ProductSpecification reference"
+        $ref: "#/definitions/VersionReference"
+      characteristics:
+        type: "array"
+        description: "A list of configurable product Offering characteristics"
+        items:
+          $ref: "#/definitions/Characteristic"
+      productOfferingPrices:
+        type: "array"
+        description: "A list of configurable product Offering prices"
+        items:
+          $ref: "#/definitions/ProductOfferingPriceConfigRef"
+    title: "ProductOfferingConfigRef"
+    description: "Selected Product Offering with configurable characteristics"
+  ProductOfferingPrice:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the ProductOfferingPrice"
+      href:
+        type: "string"
+        description: "URI of the ProductOfferingPrice"
+      name:
+        type: "string"
+        description: "Name of the ProductOfferingPrice"
+      description:
+        type: "string"
+        description: "Description of the ProductOfferingPrice"
+      entityType:
+        type: "string"
+        description: "Used to indicate ProductOfferingPrice type\n* `ProductOfferingPrice`\
+          \ Basic ProductOfferingPrice\n* `ProductOfferingPriceAlteration` ProductOfferingPriceAlteration\n\
+          * `ProductOfferingPriceRate` ProductOfferingPrice that describes rates\n\
+          * `ProductOfferingUsagePrice` Price applied on telco side"
+        enum:
+        - "ProductOfferingPrice"
+        - "ProductOfferingPriceAlteration"
+        - "ProductOfferingPriceRate"
+        - "ProductOfferingUsagePrice"
+      version:
+        type: "string"
+        description: "ProductOfferingPrice version"
+      isBundle:
+        type: "boolean"
+        description: "Flag to denote is ProductOfferingPrice composite price"
+      priceType:
+        type: "string"
+        description: "Used to indicate characteristic value type  \n* `recurringFee`\
+          \ recurring fee  \n* `activationFee` activation fee  \n* `basePrice` base\
+          \ price  \n* `upfrontPrice` upfront price \n* `discount` discount  \n* `penalty`\
+          \ penalty  \n* `usage` usage (only for ProductOfferingUsagePrice)  \n* `roamingUsage`\
+          \ roaming usage (only for ProductOfferingUsagePrice) "
+        enum:
+        - "recurringFee"
+        - "activationFee"
+        - "basePrice"
+        - "upfrontPrice"
+        - "discount"
+        - "penalty"
+        - "usage"
+        - "roamingUsage"
+        - "loyalty"
+      usageType:
+        type: "string"
+        description: "Used to indicate price usage type for ProductOfferingUsagePrice\
+          \ \n* `topupAmount` amount put to prepaid account\n* `onNetworkCalls` voice\
+          \ usage in home network\n* `offNetworkCalls` voice usage outside of home\
+          \ network\n* `SMS` SMS usage\n* `MMS` MMS usage\n* `data` data usage"
+      recurringChargePeriod:
+        type: "string"
+        description: "Charge period when price type is recurring  \n* `min` minute\
+          \  \n* `hour` hour  \n* `day` day  \n* `week` week  \n* `month` month "
+        enum:
+        - "min"
+        - "hour"
+        - "day"
+        - "week"
+        - "month"
+      recurringChargeDuration:
+        type: "number"
+        format: "double"
+        description: "Charge period duration"
+      recurringChargeOccurrence:
+        type: "integer"
+        format: "int32"
+        description: "Number of recurring charge occurrences"
+      unitOfMeasure:
+        description: "Used to indicate the unit of measure"
+        $ref: "#/definitions/UnitOfMeasure"
+      validFor:
+        description: "Validity of the Product offering price"
+        $ref: "#/definitions/TimePeriod"
+      price:
+        description: "Price value"
+        $ref: "#/definitions/Price"
+      priceConditions:
+        type: "array"
+        description: "List of price conditions describing when this price is applied"
+        items:
+          $ref: "#/definitions/PriceCondition"
+      characteristics:
+        type: "array"
+        description: "Product Offering Price characteristics, defined in Product Specification"
+        items:
+          $ref: "#/definitions/ProductSpecificationCharacteristic"
+      productSpecificationRef:
+        description: "Link to Product Specification"
+        $ref: "#/definitions/VersionReference"
+      bundledProductOfferingPrices:
+        type: "array"
+        description: "References to bundled ProductOfferingPrices"
+        items:
+          $ref: "#/definitions/VersionReference"
+      priceAlterations:
+        type: "array"
+        description: "List of Price alterations applied to current price"
+        items:
+          $ref: "#/definitions/ProductOfferingPriceAlteration"
+    title: "ProductOfferingPrice"
+  ProductOfferingPriceAlteration:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the ProductOfferingPrice"
+      href:
+        type: "string"
+        description: "URI of the ProductOfferingPrice"
+      name:
+        type: "string"
+        description: "Name of the ProductOfferingPrice"
+        enum:
+        - "contractDiscount"
+        - "magentaDiscount"
+        - "familyDiscount"
+        - "addOnDiscount"
+        - "tariffDiscount"
+        - "consentDiscount"
+        - "eBillDiscount"
+        - "dinersDiscount"
+        - "priceAlterationIdDiscount"
+        - "credibleUserDiscount"
+      description:
+        type: "string"
+        description: "Description of the ProductOfferingPrice"
+      entityType:
+        type: "string"
+        description: "Used to indicate ProductOfferingPrice type\n* `ProductOfferingPrice`\
+          \ Basic ProductOfferingPrice\n* `ProductOfferingPriceAlteration` ProductOfferingPriceAlteration\n\
+          * `ProductOfferingPriceRate` ProductOfferingPrice that describes rates\n\
+          * `ProductOfferingUsagePrice` Price applied on telco side"
+        enum:
+        - "ProductOfferingPrice"
+        - "ProductOfferingPriceAlteration"
+        - "ProductOfferingPriceRate"
+        - "ProductOfferingUsagePrice"
+      version:
+        type: "string"
+        description: "ProductOfferingPrice version"
+      isBundle:
+        type: "boolean"
+        description: "Flag to denote is ProductOfferingPrice composite price"
+      label:
+        type: "string"
+        description: "Label of the ProductOfferingPrice"
+      priceType:
+        type: "string"
+        description: "Used to indicate characteristic value type  \n* `recurringFee`\
+          \ recurring fee  \n* `activationFee` activation fee  \n* `basePrice` base\
+          \ price  \n* `upfrontPrice` upfront price \n* `discount` discount  \n* `penalty`\
+          \ penalty  \n* `usage` usage (only for ProductOfferingUsagePrice)  \n* `roamingUsage`\
+          \ roaming usage (only for ProductOfferingUsagePrice) "
+        enum:
+        - "recurringFee"
+        - "activationFee"
+        - "basePrice"
+        - "upfrontPrice"
+        - "discount"
+        - "penalty"
+        - "usage"
+        - "roamingUsage"
+        - "loyalty"
+      usageType:
+        type: "string"
+        description: "Used to indicate price usage type for ProductOfferingUsagePrice\
+          \ \n* `topupAmount` amount put to prepaid account\n* `onNetworkCalls` voice\
+          \ usage in home network\n* `offNetworkCalls` voice usage outside of home\
+          \ network\n* `SMS` SMS usage\n* `MMS` MMS usage\n* `data` data usage"
+      recurringChargePeriod:
+        type: "string"
+        description: "Charge period when price type is recurring  \n* `min` minute\
+          \  \n* `hour` hour  \n* `day` day  \n* `week` week  \n* `month` month "
+        enum:
+        - "min"
+        - "hour"
+        - "day"
+        - "week"
+        - "month"
+      recurringChargeDuration:
+        type: "number"
+        format: "double"
+        description: "Charge period duration"
+      recurringChargeOccurrence:
+        type: "integer"
+        format: "int32"
+        description: "Number of recurring charge occurrences"
+      unitOfMeasure:
+        description: "Used to indicate the unit of measure"
+        $ref: "#/definitions/UnitOfMeasure"
+      validFor:
+        description: "Validity of the Product offering price"
+        $ref: "#/definitions/TimePeriod"
+      price:
+        description: "Price value"
+        $ref: "#/definitions/Price"
+      isCustomerVisible:
+        type: "boolean"
+        description: "FLag to check if alteration is visible to customer"
+      priceConditions:
+        type: "array"
+        description: "List of price conditions describing when this price is applied"
+        items:
+          $ref: "#/definitions/PriceCondition"
+      characteristics:
+        type: "array"
+        description: "Product Offering Price characteristics, defined in Product Specification"
+        items:
+          $ref: "#/definitions/ProductSpecificationCharacteristic"
+      productSpecificationRef:
+        description: "Link to Product Specification"
+        $ref: "#/definitions/VersionReference"
+      bundledProductOfferingPrices:
+        type: "array"
+        description: "References to bundled ProductOfferingPrices"
+        items:
+          $ref: "#/definitions/VersionReference"
+    title: "ProductOfferingPriceAlteration"
+    description: "An amount, usually of money, that modifies a price charged for a\
+      \ productOffering."
+  ProductOfferingPriceConfigRef:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier"
+      name:
+        type: "string"
+        description: "Name"
+      version:
+        type: "string"
+        description: "Version"
+      characteristics:
+        type: "array"
+        description: "A list of configurable price characteristics"
+        items:
+          $ref: "#/definitions/Characteristic"
+      productSpecificationRef:
+        description: "ProductSpecification reference"
+        $ref: "#/definitions/VersionReference"
+    title: "ProductOfferingPriceConfigRef"
+    description: "Selected Product Offering Price with configurable characteristics"
+  ProductOrder:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier."
+      href:
+        type: "string"
+        description: "A valid link to the entity"
+      externalId:
+        type: "string"
+        description: "Customer communicated ID or URL"
+      audit:
+        description: "Information containing meta data related to resource event"
+        $ref: "#/definitions/Audit"
+      priority:
+        type: "number"
+        description: "Indicates priority"
+      description:
+        type: "string"
+        description: "Product order description"
+      detailedDescription:
+        type: "string"
+        description: "Product order detailed description"
+      categories:
+        type: "array"
+        description: "Business perspective category"
+        items:
+          $ref: "#/definitions/Reference"
+      state:
+        type: "string"
+        description: "Indicates product order state"
+        enum:
+        - "acknowledged"
+        - "accepted"
+        - "rejected"
+        - "inProgress"
+        - "pending"
+        - "held"
+        - "cancelled"
+        - "completed"
+        - "failed"
+        - "partial"
+      validationStatus:
+        description: "Detailed description in case of invalid cart"
+        $ref: "#/definitions/OrderValidationStatus"
+      requestedStartDate:
+        type: "string"
+        format: "date-time"
+        description: "Start date wished by the requestor"
+      requestedCompletionDate:
+        type: "string"
+        format: "date-time"
+        description: "Requested delivery date from requestor perspective"
+      expectedCompletionDate:
+        type: "string"
+        format: "date-time"
+        description: "Expected delivery date amended by the provider"
+      completionDate:
+        type: "string"
+        format: "date-time"
+        description: "Order completion date"
+      channel:
+        description: "Order channel"
+        $ref: "#/definitions/Reference"
+      relatedParties:
+        type: "array"
+        description: "\"Describes party role\n* `requestor` Party that requested entity.\n\
+          * `approver` Party that approves entity\n* `owner` Party that owns entity"
+        items:
+          $ref: "#/definitions/RelatedPartyRef"
+      contacts:
+        type: "array"
+        description: "List of all order related contacts"
+        items:
+          $ref: "#/definitions/Contact"
+      upfrontPrice:
+        description: "Upfront amount"
+        $ref: "#/definitions/UpfrontPrice"
+      recurringPrices:
+        type: "array"
+        description: "Recurring fee amounts"
+        items:
+          $ref: "#/definitions/RecurringPrice"
+      orderItems:
+        type: "array"
+        description: "Product order items"
+        items:
+          $ref: "#/definitions/OrderItem"
+      notes:
+        type: "array"
+        description: "Notes"
+        items:
+          $ref: "#/definitions/Note"
+      deliveries:
+        type: "array"
+        description: "Product order deliveries"
+        items:
+          $ref: "#/definitions/Reference"
+      relatedEntities:
+        type: "array"
+        description: "Related entities of the ProductOrder, such as ShoppingCart,\
+          \ Quote, other ProductOrders, etc."
+        items:
+          $ref: "#/definitions/RelatedEntity"
+      characteristics:
+        type: "array"
+        description: "Product order characteristics"
+        items:
+          $ref: "#/definitions/Characteristic"
+      partyPrivacyProfiles:
+        type: "array"
+        description: "Shopping cart's party privacy profiles"
+        items:
+          $ref: "#/definitions/PartyPrivacyProfile"
+      shoppingCartTerms:
+        type: "array"
+        description: "Shopping cart's terms"
+        items:
+          $ref: "#/definitions/CartTerm"
+      creditScoringResult:
+        description: "Credit scoring result"
+        $ref: "#/definitions/CreditScoringResult"
+      stateChanges:
+        type: "array"
+        description: "list of state changes"
+        items:
+          $ref: "#/definitions/StateChange"
+      entityBaseType:
+        type: "string"
+        description: "Entity base type"
+      entityType:
+        type: "string"
+        description: "Entity type"
+        enum:
+        - "productOrder"
+        - "shipmentDeliveryOrder"
+        - "shipmentReturnOrder"
+      entitySchemaLocation:
+        type: "string"
+        description: "Entity schema location"
+      documents:
+        type: "array"
+        description: "List of documents related to the order"
+        items:
+          $ref: "#/definitions/Reference"
+    title: "ProductOrder"
+    description: "Used to provide info on Product Order"
+  ProductSpecificationCharacteristic:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Name of the Entity"
+      label:
+        type: "string"
+        description: "Characteristic label, used for screen presentations"
+      version:
+        type: "string"
+        description: "Version of the Entity"
+      description:
+        type: "string"
+        description: "Description of the Entity"
+      validFor:
+        description: "Validity period of the Entity"
+        $ref: "#/definitions/TimePeriod"
+      valueType:
+        type: "string"
+        description: "Used to indicate characteristic value type  \n* `numeric` numeric\
+          \  \n* `text` text \n* `boolean` boolean \n* `date` date  \n* `dateTime`\
+          \ dateTime  \n* `productOffering` productOffering  \n* `productOfferingPrice`\
+          \ productOfferingPrice  \n* `productOfferingTerm` ProductOfferingTerm \n\
+          * `category` Category \n* `currency` Currency "
+        enum:
+        - "numeric"
+        - "text"
+        - "boolean"
+        - "date"
+        - "dateTime"
+        - "productOffering"
+        - "productOfferingPrice"
+        - "productOfferingTerm"
+        - "category"
+        - "currency"
+        - "dayInWeek"
+        - "productOfferingBenefit"
+        - "productOfferingUsage"
+      currencyCode:
+        type: "string"
+        description: "A string used as a code for specifying the currency characteristic\
+          \ (ISO4217 format)"
+      configurable:
+        type: "boolean"
+        description: "If true, the Boolean indicates that the Characteristic is configurable"
+      entityType:
+        type: "string"
+        description: "Tells context of characteristic\n* `description` Characteristic\
+          \ describes ProductOffering\n* `cardinality` ProductOffering cardinality\
+          \ is described by characteristic\n* `configuration` Characteristic is used\
+          \ to configure ProductOffering\n* `info` Characteristic is used to provide\
+          \ additional information"
+        enum:
+        - "description"
+        - "configuration"
+        - "info"
+        - "cardinality"
+      isCustomerVisible:
+        type: "boolean"
+        description: "If true, the Boolean indicates that the Characteristic is visible\
+          \ to the customer"
+      minCardinality:
+        type: "integer"
+        format: "int32"
+        description: "An integer. The minimum number of instances a CharacteristicValue\
+          \ can take on. For example, zero to five phone numbers in a group calling\
+          \ plan, where zero is the value for the minCardinality."
+      maxCardinality:
+        type: "integer"
+        format: "int32"
+        description: "An integer. The maximum number of instances a CharacteristicValue\
+          \ can take on. For example, zero to five phone numbers in a group calling\
+          \ plan, where five is the value for the maxCardinality."
+      characteristicValues:
+        type: "array"
+        description: "Possible Characteristic values"
+        items:
+          $ref: "#/definitions/ProductSpecificationCharacteristicValue"
+      validationRules:
+        type: "array"
+        description: "Validation rules"
+        items:
+          $ref: "#/definitions/ValidationRule"
+    title: "ProductSpecificationCharacteristic"
+    description: "A characteristic quality or distinctive feature of a SalesContext."
+  ProductSpecificationCharacteristicValue:
+    type: "object"
+    properties:
+      valueType:
+        type: "string"
+        description: "Used to indicate characteristic value type  \n* `numeric` numeric\
+          \  \n* `text` text \n* `boolean` boolean \n* `date` date  \n* `dateTime`\
+          \ dateTime  \n* `productOffering` productOffering  \n* `productOfferingPrice`\
+          \ productOfferingPrice  \n* `productOfferingTerm` ProductOfferingTerm \n\
+          * `category` Category \n* `currency` Currency \n* `dayInWeek` dayInWeek "
+        enum:
+        - "numeric"
+        - "text"
+        - "boolean"
+        - "date"
+        - "dateTime"
+        - "productOffering"
+        - "productOfferingPrice"
+        - "productOfferingTerm"
+        - "category"
+        - "currency"
+        - "dayInWeek"
+        - "productOfferingBenefit"
+        - "productOfferingUsage"
+      label:
+        type: "string"
+        description: "A string used for presentation purposes"
+      description:
+        type: "string"
+        description: "A string used to describe value"
+      currencyCode:
+        type: "string"
+        description: "A string used as a code for specifying the currency characteristic\
+          \ (ISO4217 format)"
+      isDefault:
+        type: "boolean"
+        description: "Indicates if the value is the default value for a characteristic"
+      value:
+        type: "string"
+        description: "A discrete value that the characteristic can take on"
+      unitOfMeasure:
+        type: "string"
+        description: "Used to indicate the unit of measure \n* `units` units  \n*\
+          \ `currency` currency  \n* `percent` percent  \n* `KiB` KiB  \n* `MiB` MiB\
+          \  \n* `GiB` GiB  \n* `sec` sec  \n* `min` min  \n* `hour` hour  \n* `day`\
+          \ day  \n* `week` week  \n* `month` month  \n* `year` year  \n* `kbps` kbps\
+          \  \n* `Mbps` Mbps  \n* `Gbps` Gbps  "
+        enum:
+        - "units"
+        - "currency"
+        - "percent"
+        - "KiB"
+        - "MiB"
+        - "GiB"
+        - "sec"
+        - "min"
+        - "hour"
+        - "day"
+        - "week"
+        - "month"
+        - "year"
+        - "kbps"
+        - "Mbps"
+        - "Gbps"
+      valueFrom:
+        type: "string"
+        description: "The low range value that a characteristic can take on"
+      valueTo:
+        type: "string"
+        description: "The upper range value that a characteristic can take on"
+      validFor:
+        description: "Characteristic Value validity"
+        $ref: "#/definitions/TimePeriod"
+    title: "ProductSpecificationCharacteristicValue"
+    description: "A number or text that can be assigned to a ProductSpecCharacteristic."
+  RecurringPrice:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the ProductOfferingPrice"
+      href:
+        type: "string"
+        description: "URI of the ProductOfferingPrice"
+      name:
+        type: "string"
+        description: "Name of the ProductOfferingPrice"
+      description:
+        type: "string"
+        description: "Description of the ProductOfferingPrice"
+      entityType:
+        type: "string"
+        description: "Used to indicate ProductOfferingPrice type\n* `ProductOfferingPrice`\
+          \ Basic ProductOfferingPrice\n* `ProductOfferingPriceAlteration` ProductOfferingPriceAlteration\n\
+          * `ProductOfferingPriceRate` ProductOfferingPrice that describes rates\n\
+          * `ProductOfferingUsagePrice` Price applied on telco side"
+        enum:
+        - "ProductOfferingPrice"
+        - "ProductOfferingPriceAlteration"
+        - "ProductOfferingPriceRate"
+        - "ProductOfferingUsagePrice"
+      version:
+        type: "string"
+        description: "ProductOfferingPrice version"
+      isBundle:
+        type: "boolean"
+        description: "Flag to denote is ProductOfferingPrice composite price"
+      priceType:
+        type: "string"
+        description: "Used to indicate characteristic value type  \n* `recurringFee`\
+          \ recurring fee  \n* `activationFee` activation fee  \n* `basePrice` base\
+          \ price  \n* `upfrontPrice` upfront price \n* `discount` discount  \n* `penalty`\
+          \ penalty  \n* `usage` usage (only for ProductOfferingUsagePrice)  \n* `roamingUsage`\
+          \ roaming usage (only for ProductOfferingUsagePrice) "
+        enum:
+        - "recurringFee"
+        - "activationFee"
+        - "basePrice"
+        - "upfrontPrice"
+        - "discount"
+        - "penalty"
+        - "usage"
+        - "roamingUsage"
+        - "loyalty"
+      usageType:
+        type: "string"
+        description: "Used to indicate price usage type for ProductOfferingUsagePrice\
+          \ \n* `topupAmount` amount put to prepaid account\n* `onNetworkCalls` voice\
+          \ usage in home network\n* `offNetworkCalls` voice usage outside of home\
+          \ network\n* `SMS` SMS usage\n* `MMS` MMS usage\n* `data` data usage"
+      recurringChargePeriod:
+        type: "string"
+        description: "Charge period when price type is recurring  \n* `min` minute\
+          \  \n* `hour` hour  \n* `day` day  \n* `week` week  \n* `month` month "
+        enum:
+        - "min"
+        - "hour"
+        - "day"
+        - "week"
+        - "month"
+      recurringChargeDuration:
+        type: "number"
+        format: "double"
+        description: "Charge period duration"
+      recurringChargeOccurrence:
+        type: "integer"
+        format: "int32"
+        description: "Number of recurring charge occurrences"
+      unitOfMeasure:
+        description: "Used to indicate the unit of measure"
+        $ref: "#/definitions/UnitOfMeasure"
+      validFor:
+        description: "Validity of the Product offering price"
+        $ref: "#/definitions/TimePeriod"
+      price:
+        description: "Price value"
+        $ref: "#/definitions/Price"
+      priceConditions:
+        type: "array"
+        description: "List of price conditions describing when this price is applied"
+        items:
+          $ref: "#/definitions/PriceCondition"
+      characteristics:
+        type: "array"
+        description: "Product Offering Price characteristics, defined in Product Specification"
+        items:
+          $ref: "#/definitions/ProductSpecificationCharacteristic"
+      productSpecificationRef:
+        description: "Link to Product Specification"
+        $ref: "#/definitions/VersionReference"
+      bundledProductOfferingPrices:
+        type: "array"
+        description: "References to bundled ProductOfferingPrices"
+        items:
+          $ref: "#/definitions/VersionReference"
+      priceAlterations:
+        type: "array"
+        description: "List of Price alterations applied to current price"
+        items:
+          $ref: "#/definitions/ProductOfferingPriceAlteration"
+      paymentMethodRef:
+        description: "PaymentMethod applied to current price"
+        $ref: "#/definitions/PaymentMethodReference"
+    title: "RecurringPrice"
+  Reference:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier"
+      href:
+        type: "string"
+        description: "Hypertext Reference"
+      name:
+        type: "string"
+        description: "Name of the Reference"
+    title: "Reference"
+    description: "Generic reference to another resource"
+  RelatedEntity:
+    type: "object"
+    properties:
+      entityType:
+        type: "string"
+        description: "Related object type, i.e 'Product', 'Place' etc"
+      relationType:
+        type: "string"
+        description: "Relation Type to related object, i.e 'dependsOn' etc"
+      relatedEntityId:
+        type: "string"
+        description: "Unique identifier of related object, i.e. product.id"
+      relatedEntityUrl:
+        type: "string"
+        description: "URI of related object, i.e. product.href"
+    title: "RelatedEntity"
+    description: "Related entity object for Cart Item"
+  RelatedPartyRef:
+    type: "object"
+    properties:
+      entityReferredType:
+        type: "string"
+        description: "parameter value"
+        enum:
+        - "Profile"
+        - "Party"
+        - "Customer"
+      id:
+        type: "string"
+        description: "Unique identifier"
+      href:
+        type: "string"
+        description: "Hypertext Reference"
+      name:
+        type: "string"
+        description: "Name of the related party"
+      role:
+        type: "string"
+    title: "RelatedPartyRef"
+    description: "RelatedParty reference. A related party defines party or party role\
+      \ linked to a specific entity."
+  StateChange:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of state change"
+      state:
+        type: "string"
+        description: "State code"
+      description:
+        type: "string"
+      subState:
+        type: "string"
+        description: "In case main state has sub states"
+      subStateDescription:
+        type: "string"
+      validFor:
+        $ref: "#/definitions/TimePeriod"
+    title: "StateChange"
+    description: "Object that contains state change trackings. It can contain possible\
+      \ future states."
+  SubAddress:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique Identifier of the subAddress"
+      href:
+        type: "string"
+        description: "Href of the subAddress"
+      type:
+        type: "string"
+        description: "Type of subAddress: it can be a subunit or a private street"
+      name:
+        type: "string"
+        description: "Name of the subAddress to identify it with a meaningful identification"
+      subUnitType:
+        type: "string"
+        description: "The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,\
+          \ UNIT, WHARF."
+      subUnitNumber:
+        type: "string"
+        description: "The discriminator used for the subunit often just a simple number\
+          \ e.g. FLAT 5, may also be a range"
+      levelType:
+        type: "string"
+        description: "Describes level types within a building"
+      levelNumber:
+        type: "string"
+        description: "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT\
+          \ 2"
+      buildingName:
+        type: "string"
+        description: "Allows for buildings that have well-known names"
+      privateStreetNumber:
+        type: "string"
+        description: "Private streets numbers internal to a private street"
+      privateStreetName:
+        type: "string"
+        description: "Private streets internal to a property (e.g. a university) may\
+          \ have internal names that are not recorded by the land title office"
+      characteristics:
+        type: "array"
+        description: "Telecom specific characteristics"
+        items:
+          $ref: "#/definitions/Characteristic"
+    title: "SubAddress"
+    description: "It is used for addressing within a property in an urban area (country\
+      \ properties are often defined differently). It may refer to a building, a building\
+      \ cluster, or a floor of a multistory building."
+  TimePeriod:
+    type: "object"
+    properties:
+      startDateTime:
+        type: "string"
+        format: "date-time"
+        description: "Beginning of the time period"
+      endDateTime:
+        type: "string"
+        format: "date-time"
+        description: "End of the time period"
+    title: "TimePeriod"
+  UnitOfMeasure:
+    type: "object"
+    properties:
+      unit:
+        type: "string"
+        description: "Used to indicate the unit of measure  \n* `units` units  \n\
+          * `currency` currency  \n* `percent` percent  \n* `KiB` KiB  \n* `MiB` MiB\
+          \  \n* `GiB` GiB  \n* `sec` sec  \n* `min` min  \n* `hour` hour  \n* `day`\
+          \ day  \n* `week` week  \n* `month` month  \n* `year` year  \n* `kbps` kbps\
+          \  \n* `Mbps` Mbps  \n* `Gbps` Gbps  "
+        enum:
+        - "units"
+        - "currency"
+        - "percent"
+        - "KiB"
+        - "MiB"
+        - "GiB"
+        - "sec"
+        - "min"
+        - "hour"
+        - "day"
+        - "week"
+        - "month"
+        - "year"
+        - "kbps"
+        - "Mbps"
+        - "Gbps"
+      amount:
+        type: "number"
+        description: "Unit of measure amount"
+    title: "UnitOfMeasure"
+    description: "Unit of Measure on ProductOfferingPrice"
+  UpfrontPrice:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the ProductOfferingPrice"
+      href:
+        type: "string"
+        description: "URI of the ProductOfferingPrice"
+      name:
+        type: "string"
+        description: "Name of the ProductOfferingPrice"
+      description:
+        type: "string"
+        description: "Description of the ProductOfferingPrice"
+      entityType:
+        type: "string"
+        description: "Used to indicate ProductOfferingPrice type\n* `ProductOfferingPrice`\
+          \ Basic ProductOfferingPrice\n* `ProductOfferingPriceAlteration` ProductOfferingPriceAlteration\n\
+          * `ProductOfferingPriceRate` ProductOfferingPrice that describes rates\n\
+          * `ProductOfferingUsagePrice` Price applied on telco side"
+        enum:
+        - "ProductOfferingPrice"
+        - "ProductOfferingPriceAlteration"
+        - "ProductOfferingPriceRate"
+        - "ProductOfferingUsagePrice"
+      version:
+        type: "string"
+        description: "ProductOfferingPrice version"
+      isBundle:
+        type: "boolean"
+        description: "Flag to denote is ProductOfferingPrice composite price"
+      priceType:
+        type: "string"
+        description: "Used to indicate characteristic value type  \n* `recurringFee`\
+          \ recurring fee  \n* `activationFee` activation fee  \n* `basePrice` base\
+          \ price  \n* `upfrontPrice` upfront price \n* `discount` discount  \n* `penalty`\
+          \ penalty  \n* `usage` usage (only for ProductOfferingUsagePrice)  \n* `roamingUsage`\
+          \ roaming usage (only for ProductOfferingUsagePrice) "
+        enum:
+        - "recurringFee"
+        - "activationFee"
+        - "basePrice"
+        - "upfrontPrice"
+        - "discount"
+        - "penalty"
+        - "usage"
+        - "roamingUsage"
+        - "loyalty"
+      usageType:
+        type: "string"
+        description: "Used to indicate price usage type for ProductOfferingUsagePrice\
+          \ \n* `topupAmount` amount put to prepaid account\n* `onNetworkCalls` voice\
+          \ usage in home network\n* `offNetworkCalls` voice usage outside of home\
+          \ network\n* `SMS` SMS usage\n* `MMS` MMS usage\n* `data` data usage"
+      recurringChargePeriod:
+        type: "string"
+        description: "Charge period when price type is recurring  \n* `min` minute\
+          \  \n* `hour` hour  \n* `day` day  \n* `week` week  \n* `month` month "
+        enum:
+        - "min"
+        - "hour"
+        - "day"
+        - "week"
+        - "month"
+      recurringChargeDuration:
+        type: "number"
+        format: "double"
+        description: "Charge period duration"
+      recurringChargeOccurrence:
+        type: "integer"
+        format: "int32"
+        description: "Number of recurring charge occurrences"
+      unitOfMeasure:
+        description: "Used to indicate the unit of measure"
+        $ref: "#/definitions/UnitOfMeasure"
+      validFor:
+        description: "Validity of the Product offering price"
+        $ref: "#/definitions/TimePeriod"
+      price:
+        description: "Price value"
+        $ref: "#/definitions/Price"
+      priceConditions:
+        type: "array"
+        description: "List of price conditions describing when this price is applied"
+        items:
+          $ref: "#/definitions/PriceCondition"
+      characteristics:
+        type: "array"
+        description: "Product Offering Price characteristics, defined in Product Specification"
+        items:
+          $ref: "#/definitions/ProductSpecificationCharacteristic"
+      productSpecificationRef:
+        description: "Link to Product Specification"
+        $ref: "#/definitions/VersionReference"
+      bundledProductOfferingPrices:
+        type: "array"
+        description: "References to bundled ProductOfferingPrices"
+        items:
+          $ref: "#/definitions/VersionReference"
+      priceAlterations:
+        type: "array"
+        description: "List of Price alterations applied to current price"
+        items:
+          $ref: "#/definitions/ProductOfferingPriceAlteration"
+      paymentMethodRef:
+        description: "PaymentMethod applied to current price"
+        $ref: "#/definitions/PaymentMethodReference"
+      paymentRef:
+        description: "Payment applied to current price"
+        $ref: "#/definitions/PaymentRef"
+    title: "UpfrontPrice"
+  ValidationRule:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "The Validation Rule name"
+      type:
+        type: "string"
+        description: "Used to indicate a Validation Rule type:\n* `pattern`   pattern\
+          \ \n* `email`     email \n* `min`       min \n* `max`       max \n* `dayInWeek`\
+          \ dayInWeek "
+        enum:
+        - "pattern"
+        - "email"
+        - "min"
+        - "max"
+        - "dayInWeek"
+      value:
+        type: "string"
+        description: "The Validation Rule value"
+    title: "ValidationRule"
+    description: "Validation Rule resource"
+  ValidityReference:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier"
+      href:
+        type: "string"
+        description: "Hypertext Reference"
+      name:
+        type: "string"
+        description: "Name of the Reference"
+      validFor:
+        description: "Validity period"
+        $ref: "#/definitions/TimePeriod"
+    title: "ValidityReference"
+    description: "Generic reference to another resource"
+  VersionReference:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the Reference"
+      href:
+        type: "string"
+        description: "URI of the Reference"
+      name:
+        type: "string"
+        description: "Name of the Reference"
+      version:
+        type: "string"
+        description: "Version of the Reference"
+    title: "VersionReference"
+    description: "Generic link to another versioning resource"
+
